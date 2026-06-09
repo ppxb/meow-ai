@@ -5,5 +5,10 @@
   "trailingComma": "none",
   "singleQuote": true,
   "bracketSpacing": true,
+  "sortTailwindcss": {
+    "stylesheet": "./src/styles/globals.css",
+    "functions": ["clsx", "cn"],
+    "preserveWhitespace": false
+  },
   "ignorePatterns": ["node_modules", "dist", "pnpm-lock.yaml", "src/routeTree.gen.ts"]
 }
