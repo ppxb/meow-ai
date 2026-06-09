@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+
+import createVitePlugins from './plugins'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: createVitePlugins(),
   resolve: {
     tsconfigPaths: true
   }
