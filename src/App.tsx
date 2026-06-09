@@ -2,7 +2,6 @@ import { RefreshCcw } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { useHealthQuery } from '@/shared/api/health'
-import '@/styles/globals.css'
 
 function App() {
   const healthQuery = useHealthQuery()
@@ -12,7 +11,7 @@ function App() {
     : 'not checked yet'
 
   return (
-    <main className="min-h-svh bg-background px-6 py-8 text-foreground">
+    <main className="px-6 py-8">
       <div className="mx-auto flex max-w-3xl flex-col gap-6">
         <header className="space-y-2">
           <p className="text-sm font-medium text-muted-foreground">Meow AI</p>
