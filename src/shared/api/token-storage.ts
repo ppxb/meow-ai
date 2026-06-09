@@ -1,6 +1,8 @@
 const ACCESS_TOKEN_KEY = 'access_token'
 const REFRESH_TOKEN_KEY = 'refresh_token'
 const REDIRECT_AFTER_LOGIN_KEY = 'redirect_after_login'
+const AUTH_LOGIN_EVENT = 'auth:login'
+const AUTH_LOGOUT_EVENT = 'auth:logout'
 
 function getStorageValue(storage: Storage | undefined, key: string) {
   return storage?.getItem(key) ?? null
@@ -30,6 +32,10 @@ export function getRefreshToken() {
   return getStorageValue(getLocalStorage(), REFRESH_TOKEN_KEY)
 }
 
+export function hasAuthTokens() {
+  return Boolean(getAccessToken() || getRefreshToken())
+}
+
 export function setTokens(accessToken: string, refreshToken?: string) {
   const storage = getLocalStorage()
   setStorageValue(storage, ACCESS_TOKEN_KEY, accessToken)
@@ -42,6 +48,34 @@ export function clearTokens() {
   const storage = getLocalStorage()
   removeStorageValue(storage, ACCESS_TOKEN_KEY)
   removeStorageValue(storage, REFRESH_TOKEN_KEY)
+}
+
+export function dispatchAuthLogin() {
+  window.dispatchEvent(new CustomEvent(AUTH_LOGIN_EVENT))
+}
+
+export function dispatchAuthLogout() {
+  window.dispatchEvent(new CustomEvent(AUTH_LOGOUT_EVENT))
+}
+
+export function subscribeToAuthChanges(listener: () => void) {
+  if (typeof window === 'undefined') return () => {}
+
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === ACCESS_TOKEN_KEY || event.key === REFRESH_TOKEN_KEY) {
+      listener()
+    }
+  }
+
+  window.addEventListener(AUTH_LOGIN_EVENT, listener)
+  window.addEventListener(AUTH_LOGOUT_EVENT, listener)
+  window.addEventListener('storage', handleStorage)
+
+  return () => {
+    window.removeEventListener(AUTH_LOGIN_EVENT, listener)
+    window.removeEventListener(AUTH_LOGOUT_EVENT, listener)
+    window.removeEventListener('storage', handleStorage)
+  }
 }
 
 export function isSafeRedirectPath(path: string) {

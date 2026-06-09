@@ -1,6 +1,6 @@
 import { apiRequest } from '@/shared/api/client'
 import { clearAuthState } from '@/shared/api/token-refresh'
-import { setTokens } from '@/shared/api/token-storage'
+import { dispatchAuthLogin, setTokens } from '@/shared/api/token-storage'
 import {
   type LoginFormValues,
   type TokenResponse,
@@ -16,7 +16,7 @@ export async function login(credentials: LoginFormValues): Promise<TokenResponse
   })
 
   setTokens(tokens.access_token, tokens.refresh_token)
-  window.dispatchEvent(new CustomEvent('auth:login'))
+  dispatchAuthLogin()
 
   return tokens
 }

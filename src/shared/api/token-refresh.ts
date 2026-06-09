@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { buildApiUrl } from '@/shared/api/config'
 import {
   clearTokens,
+  dispatchAuthLogout,
   getAccessToken,
   getRefreshToken,
   isTokenExpired,
@@ -19,7 +20,7 @@ let refreshPromise: Promise<string> | null = null
 
 export function clearAuthState() {
   clearTokens()
-  window.dispatchEvent(new CustomEvent('auth:logout'))
+  dispatchAuthLogout()
 }
 
 export async function refreshTokens() {
